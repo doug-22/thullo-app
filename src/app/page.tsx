@@ -1,8 +1,7 @@
 // "use client"
 
-import { Suspense, use } from "react";
-import User from "./components/user/user";
-import { getUser } from "./components/user/actions";
+import { Suspense } from 'react';
+import User from './components/user/user';
 
 export default function Home() {
   // const user = use(getUser())
