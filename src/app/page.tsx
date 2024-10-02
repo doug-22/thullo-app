@@ -7,11 +7,10 @@ import { getUser } from "./components/user/actions";
 export default function Home() {
   // const user = use(getUser())
 
-
   return (
     <div>
       <Suspense fallback={<p>Carregando...</p>}>
-        <User/>
+        <User />
       </Suspense>
     </div>
   );
