@@ -1,13 +1,10 @@
 // "use client"
 
-import { use } from "react";
-import { getUser } from "./actions";
-
-
+import { use } from 'react';
+import { getUser } from './actions';
 
 export default function User() {
-
-  const user = use(getUser())
+  const user = use(getUser());
   return (
     // <>{user ? (
     //   <pre>{JSON.stringify(user, null, 2)}</pre>
@@ -16,6 +13,5 @@ export default function User() {
     //   <span>aqui...</span>
     // )}</>
     <pre>{JSON.stringify(user, null, 2)}</pre>
-
   );
 }
