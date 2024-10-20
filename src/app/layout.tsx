@@ -2,6 +2,16 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { ReactNode } from 'react';
 import { Provider } from 'jotai';
+import { Roboto } from 'next/font/google';
+import ClientLayout from '@/_layouts/clientLayout';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const roboto = Roboto({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
   title: 'Thullo App',
@@ -15,8 +25,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-custom-bg-color">
-        <Provider>{children}</Provider>
+      <body className={`bg-custom-bg-color ${roboto.className}`}>
+        <Provider>
+          <ClientLayout>{children}</ClientLayout>
+          <ToastContainer />
+        </Provider>
       </body>
     </html>
   );
