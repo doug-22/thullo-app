@@ -3,14 +3,16 @@ import Button from './Button';
 import { GlobeHemisphereEast, LockKey, Plus, X } from '@phosphor-icons/react';
 import { useCallback, useMemo, useState } from 'react';
 import { modalAtom } from '@/_atoms/modal-atom';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { createBoardSchema } from '@/_utils/createBoardSchema';
 import { toast } from 'react-toastify';
 import getUserLogged from '@/_utils/getUserLogged';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { IBoard, setBoard } from '@/_services/useBoards';
+import { setBoard } from '@/_services/useBoards';
 import Select, { Option } from './Select';
-import { IUser, usersAtom } from '@/_atoms/users-atoms';
+import { IUser } from '@/_atoms/users-atoms';
+import { IBoard } from '@/_atoms/board-selected.atom';
+import { usersMock } from '@/_mocks/boards';
 
 interface IForm {
   title: string;
@@ -20,7 +22,6 @@ interface IForm {
 }
 
 export default function AddBoardModal() {
-  const users = useAtomValue(usersAtom);
   const setModal = useSetAtom(modalAtom);
   const userLogged = getUserLogged();
   const queryClient = useQueryClient();
@@ -89,13 +90,15 @@ export default function AddBoardModal() {
   const [userSelected, setUserSelected] = useState<Option | null>(null);
 
   const usersOptions = useMemo(() => {
-    return users.map((user) => {
-      return {
-        value: user.user,
-        label: user.name,
-      };
-    });
-  }, [users]);
+    return usersMock
+      ?.filter((user) => user.user !== userLogged.user)
+      ?.map((user) => {
+        return {
+          value: user.user,
+          label: user.name,
+        };
+      });
+  }, [usersMock]);
 
   return (
     <div className="flex flex-col gap-3">

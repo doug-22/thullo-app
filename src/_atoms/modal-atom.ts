@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 import { ReactNode } from 'react';
 
 export interface IModal {
-  title: null | 'add board';
+  title: null | 'add board' | 'create task';
   content: ReactNode | null;
 }
 

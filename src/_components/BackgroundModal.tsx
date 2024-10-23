@@ -29,7 +29,7 @@ export default function BackgroundModal() {
       onClick={(e) => handleOutsideCloseModal(e)}
       className="bg-gray-200/50 w-full h-full fixed z-10 top-0 left-0 flex backdrop-blur-sm"
     >
-      <div className="w-80 m-auto bg-white p-3 rounded-lg shadow-md animate-scale-up relative">
+      <div className="max-w-[700px] m-auto bg-white p-3 rounded-lg shadow-md animate-scale-up relative">
         <Button
           icon={<X size={22} />}
           onClick={handleCloseModal}
