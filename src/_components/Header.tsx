@@ -13,10 +13,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { filtersAtom } from '@/_atoms/filters-atom';
 import { useRouter } from 'next/navigation';
+import { boardSelectedAtom } from '@/_atoms/board-selected.atom';
 
 export default function Header() {
   const router = useRouter();
   const users = useAtomValue(usersAtom);
+  const [boardSelected, setBoardSelected] = useAtom(boardSelectedAtom);
   const setFilters = useSetAtom(filtersAtom);
   const queryClient = useQueryClient();
 
@@ -45,22 +47,25 @@ export default function Header() {
 
   const redirectAllBoards = () => {
     router.push('/dashboard');
+    setBoardSelected(null);
   };
 
   return (
     <header className="bg-white py-2 px-5 grid grid-cols-[1.5fr_3fr] h-16">
       <div className="flex justify-between items-center">
         <Logo />
-        <div className="flex gap-2 items-center">
-          <h2 className="font-bold text-lg">Board Title</h2>
-          <div className="w-[1px] bg-gray-500 h-8"></div>
-          <Button
-            label="All board"
-            icon={<Cube size={20} />}
-            variant="text"
-            onClick={redirectAllBoards}
-          />
-        </div>
+        {boardSelected && (
+          <div className="flex gap-2 items-center">
+            <h2 className="font-bold text-lg">{boardSelected.title}</h2>
+            <div className="w-[1px] bg-gray-500 h-8"></div>
+            <Button
+              label="All board"
+              icon={<Cube size={20} />}
+              variant="text"
+              onClick={redirectAllBoards}
+            />
+          </div>
+        )}
       </div>
       <div className="flex gap-3 justify-end">
         <InputWithSearch

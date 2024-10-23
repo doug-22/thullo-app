@@ -9,7 +9,8 @@ import {
 import getNameInitials from '@/_utils/getNameInitials';
 import { Fragment, HTMLAttributes } from 'react';
 import randomColor from '@/_utils/randomColor';
-import { IBoard } from '@/_services/useBoards';
+import { IBoard } from '@/_atoms/board-selected.atom';
+import { Members } from './Members';
 
 interface ICardBoard extends HTMLAttributes<HTMLDivElement> {
   board: IBoard;
@@ -42,22 +43,7 @@ export default function CardBoard({ board, ...props }: ICardBoard) {
           <LockKey size={22} weight="duotone" />
         )}
       </div>
-      <div className="flex gap-1">
-        {board?.members?.map((member, idx) => (
-          <Fragment key={idx}>
-            {member?.photo ? (
-              <Image src="" alt="cover" />
-            ) : (
-              <div
-                suppressHydrationWarning
-                className={`w-7 h-7 ${randomColor()} text-white flex justify-center items-center rounded-lg text-sm`}
-              >
-                {getNameInitials(member?.name)}
-              </div>
-            )}
-          </Fragment>
-        ))}
-      </div>
+      <Members members={board?.members} />
     </div>
   );
 }

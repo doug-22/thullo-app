@@ -4,7 +4,6 @@ import { useAtomValue } from 'jotai';
 import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { Option } from './Select';
 import getUserLogged from '@/_utils/getUserLogged';
-import { useBoards } from '@/_services/useBoards';
 
 interface ISelect {
   onClick: (value: Option) => void;

@@ -2,8 +2,8 @@ interface IInput {
   label: string;
   name: string;
   placeholder: string;
-  type?: 'password' | 'text';
-  value?: string;
+  type?: 'password' | 'text' | 'number';
+  value?: string | number;
   onChange?: (e: string) => void;
 }
 

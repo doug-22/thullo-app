@@ -34,7 +34,7 @@ export default function Button({
   return (
     <button
       className={`${
-        label ? 'min-w-32 min-h-[45px]' : 'min-w-9 min-h-9'
+        label ? 'min-w-32 min-h-[42px] max-h-[42px]' : 'min-w-9 min-h-9 max-h-9'
       }  p-1 scale-95 transition-all duration-200 ${
         bgColors[variant]
       } rounded-lg ${labelColors[variant]} ${fontSize[variant]} ${
