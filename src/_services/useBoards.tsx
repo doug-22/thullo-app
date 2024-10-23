@@ -1,23 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import getUserLogged from '@/_utils/getUserLogged';
-import { IUser } from '@/_atoms/users-atoms';
+import { IBoard } from '@/_atoms/board-selected.atom';
 
-export interface IBoard {
-  title: string;
-  cover: string | null;
-  public: boolean;
-  members: IUser[];
-}
-
-export interface IBoard {
-  id?: number;
-  title: string;
-  cover: string | null;
-  public: boolean;
-  members: IUser[];
-}
-
-export function getBoards(): IBoard[] {
+export function getBoards(id?: number): IBoard[] {
   const userLogged = getUserLogged();
 
   const boards: IBoard[] = localStorage.getItem('boards')
@@ -36,7 +21,17 @@ export function getBoards(): IBoard[] {
       return board;
     }
   });
-  return boardsByUser;
+
+  const boardsById = boardsByUser.filter((board) => {
+    if (id) {
+      if (board.id === id) {
+        return board;
+      }
+      return;
+    }
+  });
+
+  return id ? boardsById : boardsByUser;
 }
 
 export async function setBoard(newBoard: IBoard) {
@@ -52,10 +47,10 @@ export async function setBoard(newBoard: IBoard) {
   localStorage.setItem('boards', boardsStringify);
 }
 
-export function useBoards() {
+export function useBoards(id?: number) {
   const { data, ...rest } = useQuery({
-    queryKey: ['getBoards'],
-    queryFn: () => getBoards(),
+    queryKey: ['getBoards', id],
+    queryFn: () => getBoards(id),
   });
 
   return {

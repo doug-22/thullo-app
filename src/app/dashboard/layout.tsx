@@ -1,7 +1,7 @@
 'use client';
 
 import Header from '@/_components/Header';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const [isClient, setIsClient] = useState(false);
