@@ -13,7 +13,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # - run: npm run build
+      
+      # Instala o Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.20.1'
+
+      # Instala as dependências do projeto
+      - name: Install dependencies
+        run: npm install
+
+      # Build do projeto Next.js
+      - name: Build Next.js project
+        run: npm run build
+
+      # Deploy para o Firebase Hosting
+      - name: Deploy to Firebase Hosting
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
