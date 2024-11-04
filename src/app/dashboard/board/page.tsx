@@ -20,18 +20,18 @@ import {
   XCircle,
 } from '@phosphor-icons/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { toast } from 'react-toastify';
 
-export default function Dashboard({ params }: { params: { id: string } }) {
+export default function Dashboard() {
   const queryClient = useQueryClient();
+  const boardSelected = useAtomValue(boardSelectedAtom);
   const setModal = useSetAtom(modalAtom);
-  const { data: boards } = useBoards(Number(params.id));
-  const { data: tasks } = useTaskCards(Number(params.id));
-  const setBoardAtom = useSetAtom(boardSelectedAtom);
+  const { data: boards } = useBoards(Number(boardSelected?.id));
+  const { data: tasks } = useTaskCards(Number(boardSelected?.id));
   const [board, setBoard] = useState<IBoard | null>(null);
   const [newColumn, setNewColumn] = useState({
     isOpen: false,
@@ -44,12 +44,11 @@ export default function Dashboard({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     setBoard(boards[0]);
-    setBoardAtom(boards[0]);
     setDropZones(tasks);
   }, [boards, tasks]);
 
   const { mutate: mutateCreateColumn } = useMutation({
-    mutationFn: (data: string) => setColumn(data, Number(params.id)),
+    mutationFn: (data: string) => setColumn(data, Number(boardSelected?.id)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getTaskCards'] });
       toast.success('Column created successfully!');
@@ -63,7 +62,7 @@ export default function Dashboard({ params }: { params: { id: string } }) {
         title: string;
         tasks: ITask[];
       }[],
-    ) => setUpdateColumns(Number(params.id), data),
+    ) => setUpdateColumns(Number(boardSelected?.id), data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getTaskCards'] });
     },
@@ -72,7 +71,9 @@ export default function Dashboard({ params }: { params: { id: string } }) {
   const setCreateTaskModal = (task?: ITask) => {
     setModal({
       title: 'create task',
-      content: <CreateTaskModal idBoard={Number(params.id)} task={task} />,
+      content: (
+        <CreateTaskModal idBoard={Number(boardSelected?.id)} task={task} />
+      ),
     });
   };
 

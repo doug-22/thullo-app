@@ -1,7 +1,6 @@
 import { IUser } from '@/_atoms/users-atoms';
 import getNameInitials from '@/_utils/getNameInitials';
 import randomColor from '@/_utils/randomColor';
-import Image from 'next/image';
 import { Fragment } from 'react';
 
 export function Members({ members }: { members: IUser[] }) {
@@ -10,7 +9,7 @@ export function Members({ members }: { members: IUser[] }) {
       {members?.map((member, idx) => (
         <Fragment key={idx}>
           {member?.photo ? (
-            <Image src="" alt="cover" />
+            <img src="" alt="cover" />
           ) : (
             <div
               suppressHydrationWarning
