@@ -6,7 +6,6 @@ import { Roboto } from 'next/font/google';
 import ClientLayout from '@/_layouts/clientLayout';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const roboto = Roboto({
   weight: '400',

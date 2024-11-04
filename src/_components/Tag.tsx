@@ -1,5 +1,4 @@
 import { XCircle } from '@phosphor-icons/react';
-import Button from './Button';
 
 export interface ITag {
   title: string;

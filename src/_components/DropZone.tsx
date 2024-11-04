@@ -1,6 +1,6 @@
 import { useDrop } from 'react-dnd';
 import { ItemDropZone } from './ItemDropZone';
-import { ITask, TaskCard } from './TaskCard';
+import { ITask } from './TaskCard';
 
 export function DropZone({
   onDrop,
