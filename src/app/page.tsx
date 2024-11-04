@@ -1,17 +1,12 @@
-// "use client"
+"use client"
 
-import { Suspense, use } from "react";
-import User from "./components/user/user";
-import { getUser } from "./components/user/actions";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  // const user = use(getUser())
+  const router = useRouter()
 
-  return (
-    <div>
-      <Suspense fallback={<p>Carregando...</p>}>
-        <User />
-      </Suspense>
-    </div>
-  );
+  useEffect(() => {
+    router.push('/login')
+  }, [router])
 }
