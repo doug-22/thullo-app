@@ -23,11 +23,11 @@ jobs:
 
       # Instala as dependências do projeto
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       # Build do projeto Next.js
       - name: Build Next.js project
-        run: npm run build
+        run: yarn run build
 
       # Deploy para o Firebase Hosting
       - name: Deploy to Firebase Hosting
