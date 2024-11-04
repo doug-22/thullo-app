@@ -11,4 +11,19 @@ export const usersMock: IUser[] = [
     user: 'paulo_mont',
     password: 'paulo',
   },
+  {
+    name: 'Alice Johnson',
+    user: 'alicej',
+    password: 'alice',
+  },
+  {
+    name: 'Bob Smith',
+    user: 'bobsmith',
+    password: 'bob',
+  },
+  {
+    name: 'Charlie Brown',
+    user: 'charlieb',
+    password: 'charlie',
+  },
 ];
