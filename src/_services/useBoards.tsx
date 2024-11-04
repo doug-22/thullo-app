@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import getUserLogged from '@/_utils/getUserLogged';
 import { IBoard } from '@/_atoms/board-selected.atom';
+import { ITask } from '@/_components/TaskCard';
 
 export function getBoards(id?: number): IBoard[] {
   const userLogged = getUserLogged();
@@ -45,6 +46,24 @@ export async function setBoard(newBoard: IBoard) {
     { ...newBoard, id: indexId },
   ]);
   localStorage.setItem('boards', boardsStringify);
+
+  const tasks: {
+    idBoard: number;
+    columns: {
+      title: string;
+      tasks: ITask[];
+    }[];
+  }[] = localStorage.getItem('tasks')
+    ? JSON.parse(localStorage.getItem('tasks') ?? '[]')
+    : [];
+
+  tasks.push({
+    idBoard: indexId,
+    columns: [{ title: 'Todo', tasks: [] }],
+  });
+
+  const tasksStringify = JSON.stringify(tasks);
+  localStorage.setItem('tasks', tasksStringify);
 }
 
 export function useBoards(id?: number) {

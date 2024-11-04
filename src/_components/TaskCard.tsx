@@ -1,12 +1,15 @@
 import { IUser } from '@/_atoms/users-atoms';
 import { shortString } from '@/_utils/shortString';
 import { ITag, Tag } from './Tag';
+import { Members } from './Members';
 
 export interface ITask {
   title: string;
+  description?: string;
   tags: ITag[];
   remainingTime: number;
   owners: IUser[];
+  id?: number;
 }
 
 export function TaskCard({ title, tags, remainingTime, owners }: ITask) {
@@ -21,6 +24,7 @@ export function TaskCard({ title, tags, remainingTime, owners }: ITask) {
         ))}
       </div>
       <p className="text-sm">Remaining time: {remainingTime} hours</p>
+      <Members members={owners ?? []} />
     </div>
   );
 }
