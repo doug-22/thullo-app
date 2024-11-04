@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import {
   GlobeHemisphereEast,
   Image as ImageIcon,
@@ -21,7 +20,7 @@ export default function CardBoard({ board, ...props }: ICardBoard) {
       className="bg-white rounded-lg w-[250px] shadow-md p-3 flex flex-col gap-2 cursor-pointer"
     >
       {board?.cover ? (
-        <Image
+        <img
           src={board.cover}
           alt="cover"
           width={100}

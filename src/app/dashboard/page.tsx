@@ -1,5 +1,6 @@
 'use client';
 
+import { IBoard, boardSelectedAtom } from '@/_atoms/board-selected.atom';
 import { filtersAtom } from '@/_atoms/filters-atom';
 import { modalAtom } from '@/_atoms/modal-atom';
 import AddBoardModal from '@/_components/AddBoardModal';
@@ -16,6 +17,7 @@ export default function Dashboard() {
   const boards = useBoards();
   const filters = useAtomValue(filtersAtom);
   const setModal = useSetAtom(modalAtom);
+  const setBoardAtom = useSetAtom(boardSelectedAtom);
 
   const setAddBoardModal = () => {
     setModal({
@@ -30,8 +32,9 @@ export default function Dashboard() {
     });
   }, [boards, filters]);
 
-  const redirectToBoard = (id: number) => {
-    router.push(`/dashboard/${id}`);
+  const redirectToBoard = (board: IBoard) => {
+    setBoardAtom(board);
+    router.push(`/dashboard/board`);
   };
 
   return (
@@ -49,7 +52,7 @@ export default function Dashboard() {
           <CardBoard
             key={board.id}
             board={board}
-            onClick={() => redirectToBoard(board.id!)}
+            onClick={() => redirectToBoard(board)}
           />
         ))}
       </div>

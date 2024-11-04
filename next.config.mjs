@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   experimental: {
     reactCompiler: true
   },
@@ -12,7 +13,7 @@ const nextConfig = {
         pathname: '**'
       }
     ]
-  }
+  },
 };
 
 export default nextConfig;
