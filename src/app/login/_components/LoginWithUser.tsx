@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 
 export default function LoginWithUser() {
   const router = useRouter();
-
   const users = useAtomValue(usersAtom);
 
   const [userSelected, setUserSelected] = useState<Option | null>(null);
@@ -40,7 +39,6 @@ export default function LoginWithUser() {
       <Select
         label="User"
         placeholder="Select user"
-        value={userSelected}
         onClick={handleSelectUser}
         options={usersOptions}
       />

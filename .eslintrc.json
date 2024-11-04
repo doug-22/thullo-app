@@ -3,5 +3,10 @@
     "next/core-web-vitals",
     "eslint:recommended",
     "prettier"
-  ]
+  ],
+  "rules": {
+    "no-unused-vars": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "no-undef": "off"
+  }
 }

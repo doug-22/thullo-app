@@ -73,9 +73,11 @@ export default function Header() {
           placeholder="keywords"
           onSearch={(value) => setFilters({ search: value })}
         />
-        <div className="w-56">
-          <SelectUser onClick={handleSelectUser} />
-        </div>
+        {!boardSelected && (
+          <div className="w-56">
+            <SelectUser onClick={handleSelectUser} />
+          </div>
+        )}
       </div>
     </header>
   );

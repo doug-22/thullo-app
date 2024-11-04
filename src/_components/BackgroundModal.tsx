@@ -2,7 +2,7 @@ import { modalAtom } from '@/_atoms/modal-atom';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { MouseEvent } from 'react';
 import Button from './Button';
-import { Plus, X } from '@phosphor-icons/react';
+import { X } from '@phosphor-icons/react';
 
 export default function BackgroundModal() {
   const modal = useAtomValue(modalAtom);

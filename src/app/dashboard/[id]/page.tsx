@@ -5,9 +5,8 @@ import { modalAtom } from '@/_atoms/modal-atom';
 import Button from '@/_components/Button';
 import { CreateTaskModal } from '@/_components/CreateTaskModal';
 import { DropZone } from '@/_components/DropZone';
-import Input from '@/_components/Input';
 import { Members } from '@/_components/Members';
-import { ITask, TaskCard } from '@/_components/TaskCard';
+import { ITask } from '@/_components/TaskCard';
 import { useBoards } from '@/_services/useBoards';
 import {
   setColumn,
@@ -16,14 +15,13 @@ import {
 } from '@/_services/useTaskCards';
 import {
   CheckCircle,
-  Gear,
   GlobeHemisphereEast,
   Plus,
   XCircle,
 } from '@phosphor-icons/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { useSetAtom } from 'jotai';
+import { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { toast } from 'react-toastify';

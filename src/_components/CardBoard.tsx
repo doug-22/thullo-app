@@ -6,9 +6,7 @@ import {
   Image as ImageIcon,
   LockKey,
 } from '@phosphor-icons/react';
-import getNameInitials from '@/_utils/getNameInitials';
-import { Fragment, HTMLAttributes } from 'react';
-import randomColor from '@/_utils/randomColor';
+import { HTMLAttributes } from 'react';
 import { IBoard } from '@/_atoms/board-selected.atom';
 import { Members } from './Members';
 
