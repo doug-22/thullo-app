@@ -68,8 +68,8 @@ export default function AddBoardModal() {
   const handleAddMember = useCallback(
     (value: Option) => {
       const newMember = {
-        name: value.label,
-        user: value.value as string,
+        name: value?.label,
+        user: value?.value as string,
         password: 'password',
       };
       setForm({ ...form, members: [newMember, ...form.members] });
@@ -87,18 +87,23 @@ export default function AddBoardModal() {
     [form],
   );
 
-  const [userSelected, setUserSelected] = useState<Option | null>(null);
-
   const usersOptions = useMemo(() => {
     return usersMock
-      ?.filter((user) => user.user !== userLogged.user)
+      ?.filter((user) => {
+        const index = form.members.findIndex(
+          (member) => member.user === user.user,
+        );
+        if (index === -1 && user.user !== userLogged.user) {
+          return user;
+        }
+      })
       ?.map((user) => {
         return {
           value: user.user,
           label: user.name,
         };
       });
-  }, [usersMock]);
+  }, [usersMock, form]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -135,12 +140,11 @@ export default function AddBoardModal() {
           <Select
             label="Members"
             placeholder="Select user"
-            value={userSelected}
             onClick={handleAddMember}
             options={usersOptions}
           />
           {form.members?.length > 0 && (
-            <div className="rounded-lg border border-[#E0E0E0] p-2 mt-2 flex gap-1 flex-wrap">
+            <div className="rounded-lg border border-[#E0E0E0] p-2 mt-2 flex gap-1 flex-wrap max-w-72">
               {form.members?.map((member, idx) => (
                 <div
                   key={idx}

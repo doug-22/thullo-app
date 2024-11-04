@@ -1,10 +1,18 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import Input from './Input';
 import { IUser } from '@/_atoms/users-atoms';
 import Select, { Option } from './Select';
 import { ITag, Tag } from './Tag';
 import Button from './Button';
-import { CheckCircle, XCircle } from '@phosphor-icons/react';
+import { CheckCircle, Plus, XCircle } from '@phosphor-icons/react';
+import { modalAtom } from '@/_atoms/modal-atom';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { ITask } from './TaskCard';
+import { createTaskSchema } from '@/_utils/createTaskSchema';
+import { toast } from 'react-toastify';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { setTask, setUpdateTask } from '@/_services/useTaskCards';
+import { boardSelectedAtom } from '@/_atoms/board-selected.atom';
 
 interface IForm {
   title: string;
@@ -15,18 +23,61 @@ interface IForm {
   owners: IUser[];
 }
 
-export function CreateTaskModal() {
+export function CreateTaskModal({
+  idBoard,
+  task,
+}: {
+  idBoard: number;
+  task?: ITask;
+}) {
+  const boardSelected = useAtomValue(boardSelectedAtom);
+  const queryClient = useQueryClient();
+  const setModal = useSetAtom(modalAtom);
   const [customTag, setCustomTag] = useState({
     visible: false,
     value: '',
   });
   const [form, setForm] = useState<IForm>({
-    title: '',
-    description: '',
+    title: task?.title ?? '',
+    description: task?.description ?? '',
     tag: null,
-    tags: [],
-    remainingTime: 0,
-    owners: [],
+    tags: task?.tags ?? [],
+    remainingTime: task?.remainingTime ?? 0,
+    owners: task?.owners ?? [],
+  });
+
+  const usersOptions = useMemo(() => {
+    return boardSelected?.members?.map((user) => {
+      return {
+        value: user.user,
+        label: user.name,
+      };
+    });
+  }, [boardSelected]);
+
+  const [ownerSelected, setOwnerSelected] = useState<Option | undefined>(
+    task
+      ? {
+          value: task.owners[0].user,
+          label: task.owners[0].name,
+        }
+      : undefined,
+  );
+
+  const { mutate: mutateCreateTask } = useMutation({
+    mutationFn: (data: ITask) => setTask(data, idBoard),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTaskCards'] });
+      toast.success('Task created successfully!');
+    },
+  });
+
+  const { mutate: mutateUpdateTask } = useMutation({
+    mutationFn: (data: ITask) => setUpdateTask(data, idBoard, task?.id!),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTaskCards'] });
+      toast.success('Task updated successfully!');
+    },
   });
 
   const onChangeValue = (
@@ -67,6 +118,60 @@ export function CreateTaskModal() {
     [form],
   );
 
+  const handleOwner = useCallback(
+    (value: Option) => {
+      const memberSelected = boardSelected?.members.find(
+        (member) => member.user === value.value,
+      );
+      setForm({ ...form, owners: [memberSelected!] });
+      setOwnerSelected(value);
+    },
+    [form, boardSelected],
+  );
+
+  const createTask = useCallback(() => {
+    const newForm: ITask = {
+      title: form.title,
+      description: form.description,
+      owners: form.owners,
+      remainingTime: Number(form.remainingTime),
+      tags: form.tags,
+    };
+    const validateSchema = createTaskSchema.safeParse(newForm);
+
+    if (!validateSchema.success) {
+      toast.error(validateSchema.error?.errors[0].message);
+      return;
+    }
+    mutateCreateTask(newForm);
+    onCloseModal();
+  }, [form]);
+
+  const updateTask = useCallback(() => {
+    const newForm: ITask = {
+      title: form.title,
+      description: form.description,
+      owners: form.owners,
+      remainingTime: Number(form.remainingTime),
+      tags: form.tags,
+    };
+    const validateSchema = createTaskSchema.safeParse(newForm);
+
+    if (!validateSchema.success) {
+      toast.error(validateSchema.error?.errors[0].message);
+      return;
+    }
+    mutateUpdateTask(newForm);
+    onCloseModal();
+  }, [form]);
+
+  const onCloseModal = () => {
+    setModal({
+      title: null,
+      content: null,
+    });
+  };
+
   return (
     <div className="grid grid-cols-[1.5fr_1fr] gap-2">
       <div className="border-r border-[#E0E0E0] pr-2 flex flex-col gap-2">
@@ -91,11 +196,17 @@ export function CreateTaskModal() {
         </div>
       </div>
       <div className="flex flex-col gap-2">
+        <Select
+          label="Owner"
+          value={ownerSelected}
+          placeholder="Select user"
+          onClick={handleOwner}
+          options={usersOptions ?? []}
+        />
         <div className="flex gap-2 items-end">
           <Select
             label="Tags"
             placeholder="Add tag"
-            value={form.tag}
             options={[
               { label: 'Feature', value: 'feature' },
               { label: 'Bug', value: 'bug' },
@@ -158,6 +269,14 @@ export function CreateTaskModal() {
           type="number"
           onChange={(e) => onChangeValue('remainingTime', e)}
         />
+        <div className="flex justify-end gap-2">
+          <Button label="Cancel" variant="text" onClick={onCloseModal} />
+          <Button
+            label={task ? 'Update' : 'Create'}
+            icon={<Plus size={22} />}
+            onClick={() => (task ? updateTask() : createTask())}
+          />
+        </div>
       </div>
     </div>
   );
