@@ -1,11 +1,12 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import { ReactNode } from 'react';
-import { Provider } from 'jotai';
-import { Roboto } from 'next/font/google';
 import ClientLayout from '@/_layouts/clientLayout';
-import 'react-toastify/dist/ReactToastify.css';
+import '@coreui/coreui/dist/css/coreui.min.css';
+import { Provider } from 'jotai';
+import type { Metadata } from 'next';
+import { Roboto } from 'next/font/google';
+import { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './globals.css';
 
 const roboto = Roboto({
   weight: '400',

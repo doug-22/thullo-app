@@ -126,6 +126,20 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
+"@coreui/coreui@^5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@coreui/coreui/-/coreui-5.2.0.tgz#708f236dc2985daad6ebac06c09d481e5c6ccff5"
+  integrity sha512-DZLWzPIZP3KTNgcaRXny/7lcQm0rDMrheu3VsWpgbln5rUuJwxdopwhTSnOryVyCwjlDbs3Z8ZfIzOeBXNC4GA==
+
+"@coreui/react@^5.4.1":
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/@coreui/react/-/react-5.4.1.tgz#4971d80be13aa33eed28929e63da0577f9941646"
+  integrity sha512-ycO1XEGWqxa1Yx+1FK9wieEKVxSP8tS9QwgmtyEifZ6ArA6AvG8C1rPBuVb3FNE1SXwSEc50+zmy62QfRLtG0Q==
+  dependencies:
+    "@coreui/coreui" "^5.2.0"
+    "@popperjs/core" "^2.11.8"
+    prop-types "^15.8.1"
+
 "@emnapi/runtime@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@emnapi/runtime/-/runtime-1.2.0.tgz#71d018546c3a91f3b51106530edbc056b9f2f2e3"
@@ -550,6 +564,11 @@
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
+
+"@popperjs/core@^2.11.8":
+  version "2.11.8"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
+  integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
 "@react-dnd/asap@^5.0.1":
   version "5.0.2"

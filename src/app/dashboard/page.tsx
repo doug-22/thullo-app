@@ -34,7 +34,7 @@ export default function Dashboard() {
 
   const redirectToBoard = (board: IBoard) => {
     setBoardAtom(board);
-    router.push(`/dashboard/board`);
+    router.push(`/dashboard/board?id=${board.id}`);
   };
 
   return (

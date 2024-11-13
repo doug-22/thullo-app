@@ -1,19 +1,19 @@
 'use client';
 
-import Logo from './Logo';
-import Button from './Button';
-import { Cube } from '@phosphor-icons/react';
-import InputWithSearch from './InputWithSearch';
-import SelectUser from './SelectUser';
-import { IUser, usersAtom } from '@/_atoms/users-atoms';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { useCallback } from 'react';
-import { Option } from './Select';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
-import { filtersAtom } from '@/_atoms/filters-atom';
-import { useRouter } from 'next/navigation';
 import { boardSelectedAtom } from '@/_atoms/board-selected.atom';
+import { filtersAtom } from '@/_atoms/filters-atom';
+import { IUser, usersAtom } from '@/_atoms/users-atoms';
+import { Cube } from '@phosphor-icons/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
+import { toast } from 'react-toastify';
+import Button from './Button';
+import InputWithSearch from './InputWithSearch';
+import Logo from './Logo';
+import { Option } from './Select';
+import SelectUser from './SelectUser';
 
 export default function Header() {
   const router = useRouter();
