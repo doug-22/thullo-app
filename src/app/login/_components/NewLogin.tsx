@@ -1,12 +1,20 @@
 'use client';
 
-import { useActionState } from 'react';
-import { login } from '../actions';
-import Input from '@/_components/Input';
 import Button from '@/_components/Button';
+import Input from '@/_components/Input';
+import { useRouter } from 'next/navigation';
+import { useActionState, useEffect } from 'react';
+import { login } from '../actions';
 
 export default function NewLogin() {
-  const [result, handleLogin, isPending] = useActionState(login, null);
+  const router = useRouter();
+  const [result, handleLogin] = useActionState(login, null);
+
+  useEffect(() => {
+    if (result) {
+      router.push('/dashboard');
+    }
+  }, [result]);
 
   return (
     <form

@@ -2,7 +2,7 @@
 
 import { IBoard, boardSelectedAtom } from '@/_atoms/board-selected.atom';
 import { modalAtom } from '@/_atoms/modal-atom';
-import Button from '@/_components/Button';
+import { AddUserPopover } from '@/_components/AddUserPopover';
 import { CreateTaskModal } from '@/_components/CreateTaskModal';
 import { DropZone } from '@/_components/DropZone';
 import { Members } from '@/_components/Members';
@@ -13,6 +13,7 @@ import {
   setUpdateColumns,
   useTaskCards,
 } from '@/_services/useTaskCards';
+import { CButton, CPopover } from '@coreui/react';
 import {
   CheckCircle,
   GlobeHemisphereEast,
@@ -20,23 +21,27 @@ import {
   XCircle,
 } from '@phosphor-icons/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { toast } from 'react-toastify';
 
 export default function Dashboard() {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const id = urlParams.get('id');
   const queryClient = useQueryClient();
-  const boardSelected = useAtomValue(boardSelectedAtom);
+  const [boardSelected, setBoardSelected] = useAtom(boardSelectedAtom);
   const setModal = useSetAtom(modalAtom);
-  const { data: boards } = useBoards(Number(boardSelected?.id));
-  const { data: tasks } = useTaskCards(Number(boardSelected?.id));
+  const { data: boards } = useBoards(Number(boardSelected?.id ?? id));
+  const { data: tasks } = useTaskCards(Number(boardSelected?.id ?? id));
   const [board, setBoard] = useState<IBoard | null>(null);
   const [newColumn, setNewColumn] = useState({
     isOpen: false,
     title: '',
   });
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
   const [dropZones, setDropZones] = useState<
     { title: string; tasks: ITask[] }[]
@@ -44,6 +49,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     setBoard(boards[0]);
+    setBoardSelected(boards[0]);
     setDropZones(tasks);
   }, [boards, tasks]);
 
@@ -113,11 +119,30 @@ export default function Dashboard() {
           <span>{board?.public ? 'Public' : 'Private'}</span>
         </div>
         <Members members={board?.members ?? []} />
-        <Button icon={<Plus size={22} weight="bold" />} />
+        <CPopover
+          content={
+            <AddUserPopover
+              idBoard={Number(boardSelected?.id)}
+              close={() => setPopoverOpen(false)}
+            />
+          }
+          placement="bottom"
+          className="shadow-lg max-w-80"
+          visible={popoverOpen}
+        >
+          <CButton className="w-9 h-9 p-0 bg-[#2F80ED] text-white shadow-md hover:bg-[#2b76d8] hover:drop-shadow-lg hover:scale-100">
+            <Plus
+              size={22}
+              weight="bold"
+              className="m-auto"
+              onClick={() => setPopoverOpen(!popoverOpen)}
+            />
+          </CButton>
+        </CPopover>
       </div>
 
       <DndProvider backend={HTML5Backend}>
-        <div className="w-full bg-gray-200 rounded-lg p-2 flex gap-4">
+        <div className="w-full bg-gray-200 rounded-lg p-2 flex gap-4 overflow-auto">
           {dropZones.map((zone, index) => (
             <div key={index} className=" flex flex-col gap-1">
               <div>
@@ -166,7 +191,7 @@ export default function Dashboard() {
             )}
             {!newColumn.isOpen && (
               <button
-                className="bg-blue-300 rounded-lg text-blue-600 flex justify-between items-center shadow-md px-2 py-1 text-sm h-max"
+                className="bg-blue-300 rounded-lg text-blue-600 flex justify-between items-center shadow-md px-2 py-1 text-sm h-max w-max"
                 onClick={() => setNewColumn({ ...newColumn, isOpen: true })}
               >
                 <span>Add a list</span>
